@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    function:
+      definition: consumePastaMessages
+    stream:
+      default-binder: local-solace
+      bindings:
+        consumePastaMessages-in-0:
+          destination: PASTA.QUEUE
+          group: PASTA_CONSUMER
+          contentType: application/json 
+
+      binders:
+        local-solace:
+          type: solace
+          environment:
+            solace:
+              java:
+                host: ${SOLACE_HOST}
+                msgVpn: ${SOLACE_VPN}
+                clientUsername: ${SOLACE_USERNAME}
+                clientPassword: ${SOLACE_PASSWORD}
+                connectRetries: 3
+                connectRetriesPerHost: 0
+                reconnectRetries: 3
+      solace:
+        bindings:
+          consumePastaMessages-in-0:
+            consumer:
+              selector: "pasta = 'rotini' OR pasta = 'farfalle'"  
+
+server:
+  port: 8087

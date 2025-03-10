@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    function:
+      definition: publishPastaMessages
+    stream:
+      default-binder: local-solace
+      bindings:
+        publishPastaMessages-out-0:
+          destination: PASTA.QUEUE
+      binders:
+        local-solace:
+          type: solace
+          environment:
+            solace:
+              java:
+                host: ${SOLACE_HOST}
+                msgVpn: ${SOLACE_VPN}
+                clientUsername: ${SOLACE_USERNAME}
+                clientPassword: ${SOLACE_PASSWORD}
+                connectRetries: 3
+                connectRetriesPerHost: 0
+                reconnectRetries: 3
+
+server:
+  port: 8086
